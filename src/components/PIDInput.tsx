@@ -1,7 +1,7 @@
 import { useAtom } from "jotai"
 import { useState } from "react"
 import styled from "styled-components"
-import { kDAtom, kIAtom, kPAtom, samplingFrequencyAtom, tauAtom } from "../logic/PIDSimulator"
+import { controlMaxAtom, controlMinAtom, iMaxAtom, iMinAtom, kDAtom, kIAtom, kPAtom, samplingFrequencyAtom, tauAtom } from "../logic/PIDSimulator"
 import { Row, ShrinkableHeightDiv, SpacingHorizontal, SpacingVertical } from "./Layout"
 import { BodyRegular, TitleBold } from "./Typography"
 import { ShortInput } from "./Widgets"
@@ -50,19 +50,12 @@ export const PIDInput = () => {
       <AtomInput atom={samplingFrequencyAtom} label='Sampling Frequency (Hz)'/>
 
       <AtomInput atom={tauAtom} label='Tau'/>
-      {/* <Row>
-        <BodyRegular>Kp:</BodyRegular>
-        <input onChange={(e) => setAtom(e, setKp)}></input>
-      </Row>
-      <Row>
-        <BodyRegular>Ki:</BodyRegular>
 
-        <input onChange={(e) => setAtom(e, setKi)}></input>
-      </Row>
-      <Row>
-        <BodyRegular>Kd:</BodyRegular>
-        <input onChange={(e) => setAtom(e, setKd)}></input>
-      </Row> */}
+      <AtomInput atom={controlMaxAtom} label='Control Max'/>
+      <AtomInput atom={controlMinAtom} label='Control Min'/>
+
+      <AtomInput atom={iMaxAtom} label='Integrator Max'/>
+      <AtomInput atom={iMinAtom} label='Integrator Min'/>
     </Wrapper>
   );
 };

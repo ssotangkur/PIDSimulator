@@ -14,8 +14,11 @@ export type PIDConfig = {
 
   tau: number,
 
-  limitMax: number;
-  limitMin: number;
+  controlMax: number,
+  controlMin: number,
+
+  iMax: number,
+  iMin: number,
 }
 
 export type PIDState = {
@@ -27,10 +30,6 @@ export type PIDState = {
   dPrev: number;
 }
 
-// export type PIDOutput = {
-//   control: number,
-//   state: PIDState,
-// }
 export type PIDOutput = ReturnType<typeof PID>;
 
 export const initialState: PIDState = {
@@ -42,7 +41,7 @@ export const initialState: PIDState = {
 
 export const PID = (
   {setPoint, measurement}: PIDInput, 
-  {kP, kI, kD, samplingTime, tau, limitMax, limitMin}: PIDConfig, 
+  {kP, kI, kD, samplingTime, tau, controlMax, controlMin, iMax, iMin}: PIDConfig, 
   {iPrev, errorPrev, measurementPrev, dPrev}: PIDState
 ) => {
   const error = measurement - setPoint;
@@ -53,19 +52,17 @@ export const PID = (
   // Integrator term
   const iRaw = iPrev + 0.5 * kI * samplingTime * (error + errorPrev);
   
-  // Compute integrator limits
-  const limitMaxInternal = limitMax > p ? limitMax - p : 0;
-  const limitMinInternal = limitMin < p ? limitMin - p : 0;
-
   // Clamp integrator to the limits
-  const i = clamp(iRaw, limitMinInternal, limitMaxInternal);
+  const i = clamp(iRaw, iMin, iMax);
 
   // Derivative term
   const d = (2 * kD * (measurement - measurementPrev) +
     (2 * tau - samplingTime) * dPrev) /
     (2 * tau + samplingTime);
 
-  const control = p + i + d;
+  const controlRaw = p + i + d;
+
+  const control = clamp(controlRaw, controlMin, controlMax);
 
   const state: PIDState = {
     iPrev: i,
@@ -76,6 +73,7 @@ export const PID = (
 
   return {
     control,
+    controlRaw,
     p,
     i,
     iRaw,

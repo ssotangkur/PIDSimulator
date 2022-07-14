@@ -13,8 +13,11 @@ export const kDAtom = atom(-12);
 
 export const tauAtom = atom(1);
 
-export const limitMaxAtom = atom(1);
-export const limitMinAtom = atom(-1);
+export const controlMaxAtom = atom(1000);
+export const controlMinAtom = atom(-1000);
+
+export const iMaxAtom = atom(200);
+export const iMinAtom = atom(-200);
 
 export const outputsAtom = atom((get) => {
   const config: PIDConfig = {
@@ -26,8 +29,11 @@ export const outputsAtom = atom((get) => {
 
     tau: get(tauAtom),
 
-    limitMax: get(limitMaxAtom),
-    limitMin: get(limitMinAtom),
+    controlMax: get(controlMaxAtom),
+    controlMin: get(controlMinAtom),
+
+    iMax: get(iMaxAtom),
+    iMin: get(iMinAtom),
   };
 
   let state: PIDState = cloneDeep(initialState);

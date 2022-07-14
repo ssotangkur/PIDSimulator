@@ -16,7 +16,7 @@ const InputsContainer = styled(BorderBoxShadowDiv)`
   width: 100%;
   position: relative;
   display: flex;
-  flex-basis: 200px;
+  flex-basis: content;
   flex-grow: 1;
   ${ShrinkableHeight}
 `
