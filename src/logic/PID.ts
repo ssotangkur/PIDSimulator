@@ -44,7 +44,7 @@ export const PID = (
   {kP, kI, kD, samplingTime, tau, controlMax, controlMin, iMax, iMin}: PIDConfig, 
   {iPrev, errorPrev, measurementPrev, dPrev}: PIDState
 ) => {
-  const error = measurement - setPoint;
+  const error = setPoint - measurement;
 
   // Proportional term
   const p = kP * error;
@@ -56,7 +56,7 @@ export const PID = (
   const i = clamp(iRaw, iMin, iMax);
 
   // Derivative term
-  const d = (2 * kD * (measurement - measurementPrev) +
+  const d = -(2 * kD * (measurement - measurementPrev) +
     (2 * tau - samplingTime) * dPrev) /
     (2 * tau + samplingTime);
 

@@ -1,10 +1,8 @@
-import { useAtom } from "jotai"
-import { useState } from "react"
 import styled from "styled-components"
 import { controlMaxAtom, controlMinAtom, iMaxAtom, iMinAtom, kDAtom, kIAtom, kPAtom, samplingFrequencyAtom, tauAtom } from "../logic/PIDSimulator"
+import { AtomInput } from "./AtomInput"
 import { Row, ShrinkableHeightDiv, SpacingHorizontal, SpacingVertical } from "./Layout"
-import { BodyRegular, TitleBold } from "./Typography"
-import { ShortInput } from "./Widgets"
+import { TitleBold } from "./Typography"
 
 const Wrapper = styled(ShrinkableHeightDiv)`
   flex-direction: column;
@@ -13,30 +11,9 @@ const Wrapper = styled(ShrinkableHeightDiv)`
   padding: 1rem;
 `
 
-const RowSpaceBetween = styled(Row)`
+export const RowSpaceBetween = styled(Row)`
   justify-content: space-between;
 `
-
-const AtomInput = ({label, atom}: {label: string, atom: typeof kPAtom}) => {
-  const [atomValue, setAtomValue] = useAtom(atom);
-  const [valueString, setValueString] = useState(`${atomValue}`);
-
-  const onChange = (
-    e: React.ChangeEvent<HTMLInputElement>
-  ) => {
-    setValueString(e.target.value);
-    const value = parseInt(e.target.value);
-    if(isNaN(value)) { return; }
-    setAtomValue(value);
-  }
-
-  return (
-    <RowSpaceBetween spacing="0.5rem">
-      <div><BodyRegular>{`${label}:`}</BodyRegular></div>
-      <ShortInput onChange={onChange} value={valueString}></ShortInput>
-    </RowSpaceBetween>
-  );
-}
 
 export const PIDInput = () => {
   

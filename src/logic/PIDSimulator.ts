@@ -4,20 +4,20 @@ import { setPointsAtom } from "../components/SetPointInput";
 import { MassSystem, MassSystemConfig, MassSystemState, initialState as massSystemInitialState } from "./MassSystem";
 import { initialState, PID, PIDConfig, PIDInput, PIDState } from "./PID";
 
-export const samplingFrequencyAtom = atom(2); // in Hertz
+export const samplingFrequencyAtom = atom(15); // in Hertz
 export const samplingDurationAtom = atom(get => 1/get(samplingFrequencyAtom));
 
-export const kPAtom = atom(-4);
-export const kIAtom = atom(0);
-export const kDAtom = atom(-12);
+export const kPAtom = atom(20);
+export const kIAtom = atom(5);
+export const kDAtom = atom(4);
 
-export const tauAtom = atom(1);
+export const tauAtom = atom(0.02);
 
 export const controlMaxAtom = atom(1000);
 export const controlMinAtom = atom(-1000);
 
-export const iMaxAtom = atom(200);
-export const iMinAtom = atom(-200);
+export const iMaxAtom = atom(5);
+export const iMinAtom = atom(-5);
 
 export const outputsAtom = atom((get) => {
   const config: PIDConfig = {
@@ -50,7 +50,7 @@ export const outputsAtom = atom((get) => {
     const output = PID(input, config, state);
 
     const massConfig:MassSystemConfig = {
-      mass: 10, 
+      mass: 1, 
       sampleTime: get(samplingDurationAtom),
     };
     

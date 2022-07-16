@@ -1,6 +1,6 @@
 import { atom, useAtomValue } from "jotai";
 import { ResponsiveContainer, LineChart, Tooltip, CartesianGrid, XAxis, YAxis, Line, ReferenceLine } from "recharts";
-import { outputsAtom, samplingDurationAtom } from "../../logic/PIDSimulator";
+import { controlMaxAtom, controlMinAtom, outputsAtom, samplingDurationAtom } from "../../logic/PIDSimulator";
 
 const chartData = atom(
   get => {
@@ -17,6 +17,8 @@ const chartData = atom(
 export const ControlChart = () => {
 
   const data = useAtomValue(chartData);
+  const controlMax = useAtomValue(controlMaxAtom);
+  const controlMin = useAtomValue(controlMinAtom);
 
   return ( 
     <ResponsiveContainer>
@@ -36,6 +38,8 @@ export const ControlChart = () => {
           dot={false}
         />
          <ReferenceLine y={0} stroke="blue" />
+         <ReferenceLine y={controlMax} stroke="red" strokeDasharray="3 3" label="Control Max" />
+         <ReferenceLine y={controlMin} stroke="red" strokeDasharray="3 3" label="Control Min" />
       </LineChart>
     </ResponsiveContainer>
   );
