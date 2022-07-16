@@ -33,7 +33,6 @@ export const Page = styled.div`
   display: flex;
   align-items: center;
   flex-direction: column;
-  padding-bottom: 2rem;
 `
 
 export const Row = styled.div`

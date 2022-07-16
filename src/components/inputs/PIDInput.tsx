@@ -1,15 +1,15 @@
 import styled from "styled-components"
-import { controlMaxAtom, controlMinAtom, iMaxAtom, iMinAtom, kDAtom, kIAtom, kPAtom, samplingFrequencyAtom, tauAtom } from "../logic/PIDSimulator"
+import { controlMaxAtom, controlMinAtom, iMaxAtom, iMinAtom, kDAtom, kIAtom, kPAtom, samplingFrequencyAtom, tauAtom } from "../../logic/PIDSimulator"
 import { AtomInput } from "./AtomInput"
-import { Row, ShrinkableHeightDiv, SpacingHorizontal, SpacingVertical } from "./Layout"
-import { TitleBold } from "./Typography"
+import { Row, ShrinkableHeightDiv, SpacingHorizontal, SpacingVertical } from "../Layout"
+import { TitleBold } from "../Typography"
 
 const Wrapper = styled(ShrinkableHeightDiv)`
   flex-direction: column;
   ${SpacingVertical}
   border: solid 1px black;
   padding: 1rem;
-  overflow: scroll;
+  overflow: auto;
 `
 
 export const RowSpaceBetween = styled(Row)`

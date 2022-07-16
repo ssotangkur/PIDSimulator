@@ -1,6 +1,6 @@
 import { atom } from "jotai";
 import { cloneDeep } from "lodash";
-import { setPointsAtom } from "../components/SetPointInput";
+import { setPointsAtom } from "../components/inputs/SetPointInput";
 import { MassSystem, MassSystemConfig, MassSystemState, initialState as massSystemInitialState } from "./MassSystem";
 import { initialState, PID, PIDConfig, PIDInput, PIDState } from "./PID";
 

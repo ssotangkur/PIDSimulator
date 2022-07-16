@@ -36,3 +36,8 @@
     transform: rotate(360deg);
   }
 }
+
+/* Fix for reflex infinite resizing due to scrollbars showing which triggers another resize */
+.reflex-container > .reflex-element.noscroll {
+  overflow: hidden;
+}

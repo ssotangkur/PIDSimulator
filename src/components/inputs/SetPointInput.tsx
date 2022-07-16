@@ -1,8 +1,8 @@
 import { atom, useAtom } from "jotai"
 import { useCallback, useRef } from "react";
 import styled from "styled-components";
-import { ShrinkableHeightDiv, SpacingHorizontal } from "./Layout";
-import { BodyRegular, TitleBold } from "./Typography";
+import { ShrinkableHeightDiv, SpacingHorizontal } from "../Layout";
+import { BodyRegular, TitleBold } from "../Typography";
 
 export const setPointsAtom = atom([
   0,

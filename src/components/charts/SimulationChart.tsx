@@ -2,7 +2,8 @@ import { atom, useAtomValue } from "jotai";
 import { zip } from "lodash";
 import { CartesianGrid, Line, LineChart, ResponsiveContainer, Tooltip, XAxis, YAxis } from "recharts";
 import { outputsAtom, samplingDurationAtom } from "../../logic/PIDSimulator";
-import { setPointsAtom } from "../SetPointInput";
+import { setPointsAtom } from "../inputs/SetPointInput";
+import { Dimensions } from "./Types";
 
 export type SimulationDatum = {
   time: number,
@@ -28,32 +29,32 @@ export const chartData = atom(
   }
 );
 
-export const SimulationChart = () => {
+export const SimulationChart = (props: {dimensions?: Dimensions}) => {
 
   const data = useAtomValue(chartData);
 
   return ( 
-    <ResponsiveContainer>
-      <LineChart
-        data={data}
-        margin={{ top: 5, right: 20, left: 10, bottom: 5 }}
-        syncId='pid'
-      >
-        <Tooltip />
-        <CartesianGrid stroke="#f5f5f5" />
-        <XAxis dataKey="time" />
-        <YAxis/>
-        <Line type="monotone" 
-          dataKey="setPoint" 
-          stroke="#ff7300"
-          dot={false} />
-        <Line
-          type="monotone"
-          dataKey="measurement"
-          stroke="#387908"
-          dot={false}
-        />
-      </LineChart>
-    </ResponsiveContainer>
+    <LineChart
+      width={props.dimensions?.width}
+      height={props.dimensions?.height}
+      data={data}
+      margin={{ top: 5, right: 20, left: 10, bottom: 5 }}
+      syncId='pid'
+    >
+      <Tooltip />
+      <CartesianGrid stroke="#f5f5f5" />
+      <XAxis dataKey="time" />
+      <YAxis/>
+      <Line type="monotone" 
+        dataKey="setPoint" 
+        stroke="#ff7300"
+        dot={false} />
+      <Line
+        type="monotone"
+        dataKey="measurement"
+        stroke="#387908"
+        dot={false}
+      />
+    </LineChart>
   );
 }
