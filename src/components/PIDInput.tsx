@@ -9,6 +9,7 @@ const Wrapper = styled(ShrinkableHeightDiv)`
   ${SpacingVertical}
   border: solid 1px black;
   padding: 1rem;
+  overflow: scroll;
 `
 
 export const RowSpaceBetween = styled(Row)`
