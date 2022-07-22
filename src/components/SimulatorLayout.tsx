@@ -7,6 +7,7 @@ import { SetPointInput } from "./inputs/SetPointInput"
 import { TitleBold } from "./Typography"
 import { PIDChart } from "./charts/PIDChart"
 import { ReflexContainer, ReflexElement, ReflexSplitter } from "react-reflex"
+import { SimulationInput } from "./inputs/SimulationInput"
 
 const BorderBoxShadowDiv = styled.div`
   border: solid 1px black;
@@ -19,6 +20,8 @@ const InputsContainer = styled.div`
   display: flex;
   flex-basis: content;
   flex-grow: 1;
+  flex-shrink: 1;
+  max-height: 100%;
   ${ShrinkableHeight}
 `
 
@@ -46,10 +49,8 @@ export const Simulator = () => {
 
   return (
     <Layout>
+      <TitleBold>PID Simulator</TitleBold>
       <ReflexContainer orientation="horizontal" style={{height: "100%"}}>
-        <ReflexElement>
-          <TitleBold>PID Simulator</TitleBold>
-        </ReflexElement>
         <ReflexElement flex={1} propagateDimensions={true} className="noscroll">
           <SimulationChart/>
         </ReflexElement>
@@ -62,10 +63,11 @@ export const Simulator = () => {
           <PIDChart/>
         </ReflexElement>
         <ReflexSplitter propagate={false} />
-        <ReflexElement flex={1}  className="noscroll">
+        <ReflexElement flex={1} className="noscroll">
           <InputsContainer>
             <SetPointInput/>
             <PIDInput/>
+            <SimulationInput/>
           </InputsContainer>
         </ReflexElement>
       </ReflexContainer>

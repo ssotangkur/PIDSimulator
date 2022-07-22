@@ -21,7 +21,7 @@ export const SpacingHorizontal = css<{spacing?: string}>`
   }
 `
 export const SpacingVertical = css<{spacing?: string}>`
-  & > *:not(:last-of-type) {
+  & > *:not(:last-child) {
     margin-bottom: ${props => props.spacing ?? '1rem'};
   }
 `

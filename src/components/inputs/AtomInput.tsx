@@ -1,11 +1,10 @@
-import { useAtom } from "jotai";
+import { PrimitiveAtom, useAtom } from "jotai";
 import { useState } from "react";
-import { kPAtom } from "../../logic/PIDSimulator";
 import { BodyRegular } from "../Typography";
 import { ShortInput } from "../Widgets";
 import { RowSpaceBetween } from "./PIDInput";
 
-export const AtomInput = ({ label, atom }: { label: string; atom: typeof kPAtom; }) => {
+export const AtomInput = ({ label, atom }: { label: string; atom: PrimitiveAtom<number> }) => {
   const [atomValue, setAtomValue] = useAtom(atom);
   const [valueString, setValueString] = useState(`${atomValue}`);
 

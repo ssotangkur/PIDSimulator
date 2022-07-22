@@ -1,5 +1,6 @@
 import { atom } from "jotai";
 import { cloneDeep } from "lodash";
+import { massAtom } from "../components/inputs/SimulationInput";
 import { setPointsAtom } from "../components/inputs/SetPointInput";
 import { MassSystem, MassSystemConfig, MassSystemState, initialState as massSystemInitialState } from "./MassSystem";
 import { initialState, PID, PIDConfig, PIDInput, PIDState } from "./PID";
@@ -50,7 +51,7 @@ export const outputsAtom = atom((get) => {
     const output = PID(input, config, state);
 
     const massConfig:MassSystemConfig = {
-      mass: 1, 
+      mass: get(massAtom), 
       sampleTime: get(samplingDurationAtom),
     };
     

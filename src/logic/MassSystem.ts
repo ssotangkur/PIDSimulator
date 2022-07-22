@@ -1,3 +1,4 @@
+import { Plant } from "./Plant"
 
 export type MassSystemConfig = {
   mass: number,
@@ -35,3 +36,26 @@ export const MassSystem = (
     position: newPosition,
   }
 }
+
+export type MassSystemPlant = Plant<MassSystemConfig, MassSystemState>;
+  
+export const massSystemPlant: MassSystemPlant = ({mass, sampleTime}, {velocity, position}, control) => {
+  // When there's no control applied treat as force == 0
+  const force = control ?? 0;
+  // F = ma --> a = F/m
+  const a = force / mass;
+  const deltaV = a * sampleTime;
+
+  const newVelocity = velocity + deltaV;
+  const newPosition = position + (newVelocity * sampleTime);
+
+  return {
+    state: {
+      velocity: newVelocity,
+      position: newPosition,
+    },
+    measurement: newPosition,
+  };
+};
+
+// export const MassSimulation = simulate(massSystemPlant, initialState, {});
