@@ -1,8 +1,13 @@
 import { PrimitiveAtom, useAtom } from "jotai";
 import { useState } from "react";
+import styled from "styled-components";
+import { Row } from "../Layout";
 import { BodyRegular } from "../Typography";
 import { ShortInput } from "../Widgets";
-import { RowSpaceBetween } from "./PIDInput";
+
+export const RowSpaceBetween = styled(Row)`
+  justify-content: space-between;
+`
 
 export const AtomInput = ({ label, atom }: { label: string; atom: PrimitiveAtom<number> }) => {
   const [atomValue, setAtomValue] = useAtom(atom);

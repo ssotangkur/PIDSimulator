@@ -1,15 +1,16 @@
 import { atom, useAtomValue } from "jotai";
-import { ResponsiveContainer, LineChart, Tooltip, CartesianGrid, XAxis, YAxis, Line, ReferenceLine } from "recharts";
-import { controlMaxAtom, iMaxAtom, iMinAtom, outputsAtom, samplingDurationAtom } from "../../logic/PIDSimulator";
+import { LineChart, Tooltip, CartesianGrid, XAxis, YAxis, Line, ReferenceLine } from "recharts";
+import { iMaxAtom, iMinAtom, samplingDurationAtom } from "../../logic/PIDSimulator";
+import { simulationOutput } from "../../logic/Simulation";
 import { Dimensions } from "./Types";
 
 const chartData = atom(
   get => {
-    const outputs = get(outputsAtom);
+    const outputs = get(simulationOutput);
     const samplingDuration = get(samplingDurationAtom);
     const pidData = outputs.map((output, i) => ({
       time: i * samplingDuration,
-      ...output,
+      ...output.pidOutput,
     }));
     return pidData;
   }

@@ -1,11 +1,11 @@
 import { dirxml } from "console";
-import { atom, useSetAtom, useAtomValue } from "jotai";
+import { atom, useAtomValue, useAtom } from "jotai";
 import { map } from "lodash";
 import styled from "styled-components";
 import { MassSystemConfig, massSystemPlant, MassSystemState } from "../../logic/MassSystem"
 import { samplingDurationAtom } from "../../logic/PIDSimulator";
 import { SimulationConfig, UIConfig } from "../../logic/Simulation"
-import { ThermalConfig, thermalPlant, ThermalState } from "../../logic/ThermalSystem";
+import { ThermalConfig, thermalPlant, ThermalState, thermalSystemSimulation } from "../../logic/ThermalSystem";
 import { ShrinkableHeightDiv, SpacingVertical } from "../Layout";
 import { TitleBold } from "../Typography";
 import { DropDown, DropDownOption } from "../Widgets";
@@ -36,67 +36,12 @@ export const massSystemSimulation: SimulationConfig<MassSystemConfig, MassSystem
   }),
 }
 
-const heaterPowerAtom = atom(750);
-const heatTransferCoeffAtom = atom(2.5);
-const areaAtom = atom(0.3 * 0.3);
-const roomTempAtom = atom(20);
-const specificHeatAtom = atom(0.897);
-const thermalMassAtom = atom(1215); // density(Al) = 2700000g/m3 * 0.3m * 0.3m * 0.005m =  1215g
-
-export const thermalSystemSimulation: SimulationConfig<ThermalConfig, ThermalState> = {
-  plant: thermalPlant,
-  uiConfig: {
-    title: "Heated Bed System",
-    inputAtoms: [
-      {
-        label: "Heater Power (Watts)",
-        atom: heaterPowerAtom,
-      },
-      {
-        label: "Heat Transfer Coeff (Watts/(m^2*C))",
-        atom: heatTransferCoeffAtom,
-      },
-      {
-        label: "Area (m^2)",
-        atom: areaAtom,
-      },
-      {
-        label: "Room Temp (C)",
-        atom: roomTempAtom,
-      },
-      {
-        label: "Specific Heat (Joule/(g * C))",
-        atom: specificHeatAtom,
-      },
-      {
-        label: "Mass (g)",
-        atom: thermalMassAtom,
-      },
-    ]
-  },
-  configSupplier: (get) => {
-    return {
-      heaterPower: get(heaterPowerAtom),
-      heatTransferCoeff: get(heatTransferCoeffAtom),
-      area: get(areaAtom),
-      roomTemperature: get(roomTempAtom),
-      specificHeatCoeff: get(specificHeatAtom),
-      mass: get(thermalMassAtom),
-      samplingDuration: get(samplingDurationAtom),
-    }
-  },
-  initialStateSupplier: (get) => ({
-    prevTemp: get(roomTempAtom),
-  }),
-}
-
 export const simulations: SimulationConfig<any, any>[] = [
   massSystemSimulation,
   thermalSystemSimulation,
 ];
 
-export const selectedSimulationIndexAtom = atom(0);
-export const selectedSiumationAtom = atom<SimulationConfig<any, any>>(massSystemSimulation);
+export const selectedSimulationAtom = atom<SimulationConfig<any, any>>(thermalSystemSimulation);
 
 const InputWrapper = styled(ShrinkableHeightDiv)`
    flex-direction: column;
@@ -125,20 +70,25 @@ const PlantInput = ({uiConfig}: {uiConfig: UIConfig}) => {
 }
 
 export const PlantSelector = () => {
-  const setSelectedSimulation = useSetAtom(selectedSiumationAtom);
+  const [selectedSimulation, setSelectedSimulation] = useAtom(selectedSimulationAtom);
 
   const options: DropDownOption[] = simulations.map((sim, index) => ({
     label: sim.uiConfig.title,
-    onSelected: () => setSelectedSimulation(simulations[index]),
+    onSelected: () => {
+      setSelectedSimulation(simulations[index])
+    },
   }));
 
+  const selectedOptionIndex = simulations.findIndex((sim) => sim === selectedSimulation);
+  const selectedOption = options[selectedOptionIndex];
+
   return (
-   <DropDown options={options}/>
+   <DropDown options={options} selected={selectedOption}/>
   )
 }
 
 export const SimulationInput = () => {
-  const selectedSimulation = useAtomValue(selectedSiumationAtom);
+  const selectedSimulation = useAtomValue(selectedSimulationAtom);
 
   return (
     <Wrapper>

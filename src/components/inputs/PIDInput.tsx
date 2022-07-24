@@ -1,7 +1,7 @@
 import styled from "styled-components"
 import { controlMaxAtom, controlMinAtom, iMaxAtom, iMinAtom, kDAtom, kIAtom, kPAtom, samplingFrequencyAtom, tauAtom } from "../../logic/PIDSimulator"
 import { AtomInput } from "./AtomInput"
-import { Row, ShrinkableHeightDiv, SpacingHorizontal, SpacingVertical } from "../Layout"
+import { ShrinkableHeightDiv, SpacingVertical } from "../Layout"
 import { TitleBold } from "../Typography"
 
 const Wrapper = styled(ShrinkableHeightDiv)`
@@ -10,10 +10,6 @@ const Wrapper = styled(ShrinkableHeightDiv)`
   border: solid 1px black;
   padding: 1rem;
   overflow: auto;
-`
-
-export const RowSpaceBetween = styled(Row)`
-  justify-content: space-between;
 `
 
 export const PIDInput = () => {

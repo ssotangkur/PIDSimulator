@@ -8,6 +8,7 @@ import { TitleBold } from "./Typography"
 import { PIDChart } from "./charts/PIDChart"
 import { ReflexContainer, ReflexElement, ReflexSplitter } from "react-reflex"
 import { SimulationInput } from "./inputs/SimulationInput"
+import { ChartControlsInput } from "./inputs/ChartControlsInput"
 
 const BorderBoxShadowDiv = styled.div`
   border: solid 1px black;
@@ -68,6 +69,7 @@ export const Simulator = () => {
             <SetPointInput/>
             <PIDInput/>
             <SimulationInput/>
+            <ChartControlsInput/>
           </InputsContainer>
         </ReflexElement>
       </ReflexContainer>

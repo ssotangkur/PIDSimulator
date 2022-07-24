@@ -1,10 +1,12 @@
-import { atom, useAtom } from "jotai"
+import { atom, useAtom, useAtomValue } from "jotai"
+import { clamp, random } from "lodash";
 import { useCallback, useRef } from "react";
 import styled from "styled-components";
 import { ShrinkableHeightDiv, SpacingHorizontal } from "../Layout";
 import { BodyRegular, TitleBold } from "../Typography";
+import { setPointMaxAtom, setPointMinAtom } from "./ChartControlsInput";
 
-export const setPointsAtom = atom([
+const internalSetPointsAtom = atom([
   0,
   2,
   3,
@@ -83,6 +85,16 @@ export const setPointsAtom = atom([
   0,
 ]);
 
+export const setPointsAtom = atom<number[], (prev: number[]) => number[], void>(
+  (get) => get(internalSetPointsAtom),
+  (get, set, update) => {
+    const min = get(setPointMinAtom);
+    const max = get(setPointMaxAtom);
+    const prev = get(internalSetPointsAtom);
+    set(internalSetPointsAtom, update(prev).map(sp => clamp(sp, min, max)));
+  }
+);
+
 const TableViewport = styled(ShrinkableHeightDiv)`
   display: flex;
   border: solid 1px black;
@@ -129,11 +141,13 @@ export const SetPointInput = () => {
 
   const [setPoints, setSetPoints] = useAtom(setPointsAtom);
   const inputRef = useRef<HTMLInputElement>(null);
+  const minSetPoint = useAtomValue(setPointMinAtom);
+  const maxSetPoint = useAtomValue(setPointMaxAtom);
 
   const incrementPoint = useCallback((index: number) => {
     setSetPoints((prev) => {
       const next = [...prev];
-      next[index]++;
+      next[index] = clamp(next[index] + 1, minSetPoint, maxSetPoint);
       return next;
     });
   }, [setSetPoints]);
@@ -141,7 +155,7 @@ export const SetPointInput = () => {
   const decrementPoint = useCallback((index: number) => {
     setSetPoints((prev) => {
       const next = [...prev];
-      next[index]--;
+      next[index] = clamp(next[index] - 1, minSetPoint, maxSetPoint);
       return next;
     });
   }, [setSetPoints]);

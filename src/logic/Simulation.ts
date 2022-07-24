@@ -1,6 +1,9 @@
-import { Atom, PrimitiveAtom } from "jotai";
+import { atom, Atom, PrimitiveAtom } from "jotai";
 import { cloneDeep } from "lodash";
+import { setPointsAtom } from "../components/inputs/SetPointInput";
+import { selectedSimulationAtom } from "../components/inputs/SimulationInput";
 import { PIDOutput, PIDConfig, PIDState, initialState, PIDInput, PID } from "./PID";
+import { kPAtom, kIAtom, kDAtom, samplingDurationAtom, tauAtom, controlMaxAtom, controlMinAtom, iMaxAtom, iMinAtom } from "./PIDSimulator";
 import { PlantOutput, Plant } from "./Plant";
 
 export type SimulationOutput<S> = {
@@ -63,3 +66,27 @@ export type SimulationConfig<Config, State> = {
   configSupplier: (get: (atom: Atom<number>) => number) => Config,
   initialStateSupplier: (get: (atom: Atom<number>) => number) => State,
 }
+
+export const simulationOutput = atom((get) => {
+  const simulation = get(selectedSimulationAtom);
+  const plantConfig = simulation.configSupplier(get);
+  const initialState = simulation.initialStateSupplier(get);
+  const pidConfig: PIDConfig = {
+    kP: get(kPAtom),
+    kI: get(kIAtom),
+    kD: get(kDAtom),
+
+    samplingTime: get(samplingDurationAtom),
+
+    tau: get(tauAtom),
+
+    controlMax: get(controlMaxAtom),
+    controlMin: get(controlMinAtom),
+
+    iMax: get(iMaxAtom),
+    iMin: get(iMinAtom),
+  };
+  
+  const output = simulate(simulation.plant, initialState, plantConfig, get(setPointsAtom), pidConfig);
+  return output;
+})
